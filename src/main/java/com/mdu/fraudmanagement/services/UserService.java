@@ -91,7 +91,7 @@ public class UserService {
 					User user=new User(0, regUser.getUserId(),regUser.getFirstName(),regUser.getLastName(),
 							regUser.getDob(), regUser.getGender(),regUser.getContactNo() ,
 							regUser.getEmail(), regUser.getPassword(), false, 
-							false,null,regUser.getAns1(),regUser.getAns2(),regUser.getAns3());
+							0,null,regUser.getAns1(),regUser.getAns2(),regUser.getAns3());
 					
 					
 					userRepository.save(user);
@@ -157,6 +157,41 @@ public class UserService {
 				userRepository.save(user);
 			}
 	
+			
+		}
+
+
+//find by authorization value where value =0 means not authorized;
+		public List<User> getAllUserByAuthStatus() {
+			
+			return userRepository.findByisAuthstatus();
+			
+		}
+
+//change auth status(reject=2/accept=1/null=0)
+
+		public Map<String, String> changeAuthStatus(String userId ,int isAuthorized) {
+			
+			User user =userRepository.findByUserId(userId);	
+			Map<String,String> authResponse=new HashMap<>();
+			
+			if(user!=null) {
+				
+				if(isAuthorized==1) {
+					user.setIsAuthorized(isAuthorized);
+					userRepository.save(user);
+					authResponse.put("isAuthorized","Your request has been approved");
+					
+				}else if(isAuthorized==2){
+					user.setIsAuthorized(isAuthorized);
+					userRepository.save(user);
+					authResponse.put("isAuthorized","Your request has been declined");
+				
+				}else authResponse.put("isAuthorized","Remain unchange");
+				
+			}
+			
+			return authResponse;
 			
 		}
 

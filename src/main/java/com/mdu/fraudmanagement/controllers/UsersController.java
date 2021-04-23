@@ -1,12 +1,14 @@
 package com.mdu.fraudmanagement.controllers;
 
 import java.util.Map;
-
+import java.util.Optional;
+import javax.jws.soap.SOAPBinding.Use;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mdu.fraudmanagement.dto.Login;
 import com.mdu.fraudmanagement.dto.RegistrationDto;
+import com.mdu.fraudmanagement.entities.User;
 import com.mdu.fraudmanagement.services.UserService;
+import java.util.List;
 
 @RestController
 public class UsersController {
@@ -93,9 +97,36 @@ public class UsersController {
 	}
 
 	
+	//isAuthorized status check
+	
+	@GetMapping("/notAuthorized")
+	private ResponseEntity<List<User>> getAuthorizedSatus() {
+
+		
+		
+		List<User> user=userService.getAllUserByAuthStatus();
+		
+		if(!user.isEmpty()) {
+			return new ResponseEntity<>(user,HttpStatus.OK);
+		}
+
+		return new ResponseEntity<>(user,HttpStatus.ACCEPTED);
+
+	}
 	
 	
 	
+	//isAuthorized status change(0 means nothing ,1=approved,2=reject)
+	
+	@PostMapping("/changeAuthStatus")
+	private ResponseEntity<Map<String, String>> changeAuthStatus(@RequestParam(name = "userId") String userId,
+			@RequestParam(name = "isAuthorized") int isAuthorized) {
+
+				
+		
+		return new ResponseEntity<>(userService.changeAuthStatus( userId ,isAuthorized),HttpStatus.ACCEPTED);
+
+	}
 	
 	
 	

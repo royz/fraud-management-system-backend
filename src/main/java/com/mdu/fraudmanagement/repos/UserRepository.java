@@ -1,5 +1,7 @@
 package com.mdu.fraudmanagement.repos;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -35,6 +37,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	@Query(value="SELECT * from users u WHERE u.contact_no=?1 AND u.ans1=?2 AND u.ans2=?3 AND u.ans3=?4 ",nativeQuery = true)
 	public User findByContactNoAndAns(String contactNo, String ans1, String ans2, String ans3);
+
+	
+	
+	@Query(value="SELECT * from users u WHERE u.is_authorized=0",nativeQuery = true)
+	public List<User> findByisAuthstatus();
 
 //	@Modifying
 //	@Query(value="UPDATE users u SET u.password=?2  WHERE u.user_id=?1 ",nativeQuery = true)

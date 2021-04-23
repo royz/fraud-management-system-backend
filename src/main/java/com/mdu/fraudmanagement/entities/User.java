@@ -40,18 +40,21 @@ public class User implements Serializable {
 	private String email;
 	private String password;
 	private boolean isAdmin;
-	private boolean isAuthorized;
+	@Column(nullable = true)
+	private int isAuthorized;
 	private String token;
 	private String ans1;
 	private String ans2;
 	private String ans3;
 	
 	
-	@OneToMany(targetEntity= Card.class , cascade=CascadeType.ALL)
-	@JoinColumn(name="cp_fk" ,referencedColumnName = "userId")
+//	@OneToMany(targetEntity= Card.class , cascade=CascadeType.ALL)
+//	@JoinColumn(name="cp_fk" ,referencedColumnName = "userId")
+//	private List<Card> cards;
+	
+	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY ,orphanRemoval = true,mappedBy = "user")
+	
 	private List<Card> cards;
-	
-	
 	
 	
 	
@@ -66,7 +69,7 @@ public class User implements Serializable {
 
 
 	public User(int id, String userId, String firstName, String lastName, Date dob, String gender, String contactNo,
-			String email, String password, boolean isAdmin, boolean isAuthorized, String token, String ans1, String ans2,
+			String email, String password, boolean isAdmin, int isAuthorized, String token, String ans1, String ans2,
 			String ans3) {
 		super();
 		this.id = id;
@@ -154,10 +157,10 @@ public class User implements Serializable {
 	public void setIsAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
 	}
-	public boolean getIsAuthorized() {
+	public int getIsAuthorized() {
 		return isAuthorized;
 	}
-	public void setIsAuthorized(boolean isAuthorized) {
+	public void setIsAuthorized(int isAuthorized) {
 		this.isAuthorized = isAuthorized;
 	}
 	
@@ -215,7 +218,7 @@ public class User implements Serializable {
 		return "User [id=" + id + ", userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName
 				+ ", dob=" + dob + ", gender=" + gender + ", contactNo=" + contactNo + ", email=" + email
 				+ ", password=" + password + ", isAdmin=" + isAdmin + ", isAuthorized=" + isAuthorized + ", token="
-				+ token + ", ans1=" + ans1 + ", ans2=" + ans2 + ", ans3=" + ans3 + ", cards=" + cards + "]";
+				+ token + ", ans1=" + ans1 + ", ans2=" + ans2 + ", ans3=" + ans3 + "]";
 	}
 
 
