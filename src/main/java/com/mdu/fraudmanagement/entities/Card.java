@@ -19,7 +19,7 @@ public class Card implements Serializable {
 	private String cardType;
 	private Date expiryDate;
 	private String dateTime;
-	private String fraudLevel;
+	private int fraudLevel;
 	private boolean isBlocked;
 	
 
@@ -27,16 +27,13 @@ public class Card implements Serializable {
 	@JoinColumn(name="user_id" ,referencedColumnName ="userId")
 	private User user;
 	
-	
-	
-	
 
 	public Card() {
 		super();
 	}
 
 	public Card(int id, int cardNo, String cardHolderName, String accno, String cardType, Date expiryDate,
-			String dateTime, String fraudLevel, boolean isBlocked, String accNo) {
+			String dateTime, int fraudLevel, boolean isBlocked, String accNo ,User user) {
 		super();
 		this.id = id;
 		this.cardNo = cardNo;
@@ -47,6 +44,7 @@ public class Card implements Serializable {
 		this.dateTime = dateTime;
 		this.fraudLevel = fraudLevel;
 		this.isBlocked = isBlocked;
+		this.user=user;
 
 
 	}
@@ -107,11 +105,11 @@ public class Card implements Serializable {
 		this.dateTime = dateTime;
 	}
 
-	public String getFraudLevel() {
+	public int getFraudLevel() {
 		return fraudLevel;
 	}
 
-	public void setFraudLevel(String fraudLevel) {
+	public void setFraudLevel(int fraudLevel) {
 		this.fraudLevel = fraudLevel;
 	}
 
@@ -124,13 +122,19 @@ public class Card implements Serializable {
 	}
 
 
-	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 	@Override
 	public String toString() {
 		return "Card [id=" + id + ", cardNo=" + cardNo + ", cardHolderName=" + cardHolderName + ", accNo=" + accNo
 				+ ", cardType=" + cardType + ", expiryDate=" + expiryDate + ", dateTime=" + dateTime + ", fraudLevel="
-				+ fraudLevel + ", isBlocked=" + isBlocked + "]";
+				+ fraudLevel + ", isBlocked=" + isBlocked + ", user=" + user + "]";
 	}
 
 }
