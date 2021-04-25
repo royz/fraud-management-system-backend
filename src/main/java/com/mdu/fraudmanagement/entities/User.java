@@ -42,7 +42,7 @@ public class User implements Serializable {
 	private boolean isAdmin;
 	@Column(nullable = true)
 	private int isAuthorized;
-	private String token;
+	
 	private String ans1;
 	private String ans2;
 	private String ans3;
@@ -83,7 +83,6 @@ public class User implements Serializable {
 		this.password = password;
 		this.isAdmin = isAdmin;
 		this.isAuthorized = isAuthorized;
-		this.token = token;
 		this.ans1 = ans1;
 		this.ans2 = ans2;
 		this.ans3 = ans3;
@@ -164,14 +163,7 @@ public class User implements Serializable {
 		this.isAuthorized = isAuthorized;
 	}
 	
-	public String getToken() {
-		return token;
-	}
-
-
-	public void setToken(String token) {
-		this.token = token;
-	}
+	
 	
 	
 	
@@ -217,8 +209,7 @@ public class User implements Serializable {
 	public String toString() {
 		return "User [id=" + id + ", userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName
 				+ ", dob=" + dob + ", gender=" + gender + ", contactNo=" + contactNo + ", email=" + email
-				+ ", password=" + password + ", isAdmin=" + isAdmin + ", isAuthorized=" + isAuthorized + ", token="
-				+ token + ", ans1=" + ans1 + ", ans2=" + ans2 + ", ans3=" + ans3 + "]";
+				+ ", password=" + password + ", isAdmin=" + isAdmin + ", isAuthorized=" + isAuthorized + ", ans1=" + ans1 + ", ans2=" + ans2 + ", ans3=" + ans3 + "]";
 	}
 
 

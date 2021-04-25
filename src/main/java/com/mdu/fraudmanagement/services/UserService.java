@@ -41,6 +41,15 @@ public class UserService {
 			
 			if(user.getPassword().equals(login.getPassword())) {
 				
+//				validation.put("email", user.getEmail());
+//				validation.put("isAdmin", user.getIsAdmin());
+//				validation.put("isAuthorized", user.getIsAuthorized());
+				
+				validation.put("userId", user.getUserId());
+				validation.put("name", user.getFirstName()+" "+user.getLastName());
+//				validation.put("dob", user.getDob());
+//				validation.put("gender", user.getGender());
+				validation.put("contactNo", user.getContactNo());
 				validation.put("email", user.getEmail());
 				validation.put("isAdmin", user.getIsAdmin());
 				validation.put("isAuthorized", user.getIsAuthorized());
