@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mdu.fraudmanagement.entities.User;
 
@@ -42,7 +43,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	
 	@Query(value="SELECT * from users u WHERE u.is_authorized=0",nativeQuery = true)
 	public List<User> findByisAuthstatus();
-
+	
+	
 //	@Modifying
 //	@Query(value="UPDATE users u SET u.password=?2  WHERE u.user_id=?1 ",nativeQuery = true)
 //	public void upadatePasswordByUserId(@Param("user_id") String userId, @Param("password")   String password);

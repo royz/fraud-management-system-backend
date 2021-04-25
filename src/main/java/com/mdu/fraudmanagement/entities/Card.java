@@ -18,7 +18,7 @@ public class Card implements Serializable {
 	private String accNo;
 	private String cardType;
 	private Date expiryDate;
-	private String dateTime;
+	private Date dateTime;
 	private int fraudLevel;
 	private boolean isBlocked;
 	
@@ -33,7 +33,7 @@ public class Card implements Serializable {
 	}
 
 	public Card(int id, int cardNo, String cardHolderName, String accno, String cardType, Date expiryDate,
-			String dateTime, int fraudLevel, boolean isBlocked, String accNo ,User user) {
+			Date dateTime, int fraudLevel, boolean isBlocked, String accNo ,User user) {
 		super();
 		this.id = id;
 		this.cardNo = cardNo;
@@ -97,11 +97,11 @@ public class Card implements Serializable {
 		this.expiryDate = expiryDate;
 	}
 
-	public String getdateTime() {
+	public Date getdateTime() {
 		return dateTime;
 	}
 
-	public void setdateTime(String dateTime) {
+	public void setdateTime(Date dateTime) {
 		this.dateTime = dateTime;
 	}
 

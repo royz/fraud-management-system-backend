@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +36,7 @@ public class CardController {
 		return new ResponseEntity<>(card.getId(),HttpStatus.ACCEPTED);
 
 	}
-	
+	//delete by fraud id
 	//we can pass only id to delete the fraud
 	@DeleteMapping("/user/frauds/card/delete")
 	private int deleteCard(@RequestBody Card card) {
@@ -72,5 +73,39 @@ public class CardController {
 		
 		
 	}
+	//edit card fraud by card farud Id(@param id , Body- acc_no,cardHolderName,cardNo,cardType,dateTime,expiryDate,fraudLevel,isblocked)
 
+	@PutMapping("user/fraud/card/update")
+	private ResponseEntity<?> editCardFraudById(@RequestParam(name = "id") int id, 
+			@RequestBody Card card) {
+
+		cardService.editFrauds(id, card);
+
+		return new ResponseEntity<>(HttpStatus.OK);
+
+	}
+	
+	
+	
+	//cahange is blocked status by accNo
+	
+	@PutMapping("user/fraud/card/blockStatusChange")
+	private ResponseEntity<?> editIsBlockedStatusByAccNo(@RequestParam(name = "accNo") String accNo ,
+			@RequestParam(name = "isBlocked") boolean isBlocked) {
+
+		cardService.changeBlockSattus(accNo, isBlocked);
+
+		return new ResponseEntity<>(HttpStatus.OK);
+
+	}
+	
 }
+
+
+
+
+
+
+
+
+

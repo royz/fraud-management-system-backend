@@ -25,10 +25,15 @@ public class CardService {
 	public void register(Card card, String user_id) {
 
 		User user = userRepository.findByUserId(user_id);
+		
+		if(user!=null) {
+			card.setUser(user);
+			cardRepository.save(card);
+		}
+		
+		
 
-		card.setUser(user);
-
-		cardRepository.save(card);
+		
 
 	}
 	
@@ -58,5 +63,38 @@ public class CardService {
 	public List<Card> getByfraudLevel(int fraudLevel) {
 		return cardRepository.findByFraudLevel(fraudLevel);
 	}
+
+	
+	//edit card fraud by card farud Id(@param id , Body- acc_no,cardHolderName,cardNo,cardType,
+	//dateTime,expiryDate,fraudLevel,isblocked)
+	public void editFrauds(int id, Card card) {
+		
+		Card cardToUpadate=cardRepository.getOne(id);
+		
+		
+		
+			if(cardToUpadate!=null) {
+				
+				
+				cardToUpadate.setAccNo(card.getAccNo());
+				cardToUpadate.setCardHolderName(card.getCardHolderName());
+				cardToUpadate.setCardNo(card.getCardNo());
+				cardToUpadate.setCardType(card.getCardType());
+				cardToUpadate.setdateTime(card.getdateTime());
+				cardToUpadate.setExpiryDate(card.getExpiryDate());
+				cardToUpadate.setFraudLevel(card.getFraudLevel());
+				
+				cardRepository.save(cardToUpadate);
+			}
+		
+		}
+	//cahange is blocked status by accNo
+	public void changeBlockSattus(String accNo, boolean isBlocked) {
+		
+		cardRepository.updateBlockedStatus(accNo,isBlocked);
+	}
+	
+
+
 
 }
