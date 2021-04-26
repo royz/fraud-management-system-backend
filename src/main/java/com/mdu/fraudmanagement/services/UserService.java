@@ -15,199 +15,125 @@ import com.mdu.fraudmanagement.entities.User;
 import com.mdu.fraudmanagement.exceptions.UserNotFoundException;
 import com.mdu.fraudmanagement.repos.UserRepository;
 
-
 @Service
 public class UserService {
-	
-	@Autowired
-	UserRepository userRepository;
-	
 
-	public List<User> findAllEmp() {
-		// TODO Auto-generated method stub
-		 return userRepository.findAll();
-	}
-	
-	
-	
-	//login
-	public Map<String,Object> validateUser(Login login) {
-		
-		User user=	userRepository.findByUserId(login.getUserId());
-		
-		 Map<String,Object> validation=new HashMap<>();
-		
-		if(user!=null) {
-			
-			if(user.getPassword().equals(login.getPassword())) {
-				
-//				validation.put("email", user.getEmail());
-//				validation.put("isAdmin", user.getIsAdmin());
-//				validation.put("isAuthorized", user.getIsAuthorized());
-				
-				validation.put("userId", user.getUserId());
-				validation.put("name", user.getFirstName()+" "+user.getLastName());
-//				validation.put("dob", user.getDob());
-//				validation.put("gender", user.getGender());
-				validation.put("contactNo", user.getContactNo());
-				validation.put("email", user.getEmail());
-				validation.put("isAdmin", user.getIsAdmin());
-				validation.put("isAuthorized", user.getIsAuthorized());
-				
-			}
-		}
-		
-		return validation;
-			
-		}
-
-	
-	
-	//new registration of user with email,contact,userId validation
-		public Map<String, String> validateUserReg(RegistrationDto regUser) {
-			
-			User idUser=new User();
-			idUser=userRepository.findByUserId(regUser.getUserId());
-			
-			User emailUser=new User();
-			emailUser=userRepository.findByEmail(regUser.getEmail());
-			
-			User contactUser=new User();
-			 contactUser=userRepository.findByContactNo(regUser.getContactNo());
-
-			
-			
-			 Map<String,String> validation=new HashMap<>();
-				
-				if(idUser==null) {
-					validation.put("userId","success");
-					
-				}else validation.put("userId","User id all ready exist");
-				
-				
-				if(emailUser==null) {
-					validation.put("email","success");
-					
-				}else validation.put("email","Email id all ready exist");
-				
-				if(contactUser==null) {
-					validation.put("contactNo","success");
-					
-				}else validation.put("contactNo","Contact no all ready exist");
-				
-				if(idUser==null && emailUser==null && contactUser==null) {
-					
-					User user=new User(0, regUser.getUserId(),regUser.getFirstName(),regUser.getLastName(),
-							regUser.getDob(), regUser.getGender(),regUser.getContactNo() ,
-							regUser.getEmail(), regUser.getPassword(), false, 
-							0,null,regUser.getAns1(),regUser.getAns2(),regUser.getAns3());
-					
-					
-					userRepository.save(user);
-				}
-				
-				
-				return validation;
-			
-		}
+    @Autowired
+    UserRepository userRepository;
 
 
-		//forgot password  authentication (userId, ans1,2,3)
-		public  Map<String, Object> validatePassword(String userId, String ans1, String ans2, String ans3) {
-			
-			User user=userRepository.findByUserIdAndAns(userId,ans1,ans2,ans3);
-			Map<String,Object> validation=new HashMap<>();
-			
-			
-			if(user!=null) {
-				
-				validation.put("userId", user.getUserId());
-			}
-			else validation.put("userId", null);
-			
-			
-			
-			return validation;
-			
-		}
+    public List<User> findAllEmp() {
+        return userRepository.findAll();
+    }
 
-		
-		//forgot UserID authentication (contactNo, ans1,2,3)
-				public  Map<String, Object> validateUserId(String contactNo, String ans1, String ans2, String ans3) {
-					
-					User user=userRepository.findByContactNoAndAns(contactNo,ans1,ans2,ans3);
-					Map<String,Object> validation=new HashMap<>();
-					
-					
-					if(user!=null) {
-						
-						validation.put("userId", user.getUserId());
-					}
-					else validation.put("userId", null);
-					
-					
-					
-					return validation;
-					
-				}
-		
-		
+    //login
+    public Map<String, Object> validateUser(Login login) {
+        User user = userRepository.findByUserId(login.getUserId());
+        Map<String, Object> validation = new HashMap<>();
 
-		//update password using userId
-		public void updatePassword(String userId, String password) {
-			
-			
-			User user =userRepository.findByUserId(userId);
-			
-			if(user!=null) {
-				
-				user.setPassword(password);
-				
-				userRepository.save(user);
-			}
-	
-			
-		}
+        if (user != null) {
+            if (user.getPassword().equals(login.getPassword())) {
+                validation.put("userId", user.getUserId());
+                validation.put("name", user.getFirstName() + " " + user.getLastName());
+                validation.put("contactNo", user.getContactNo());
+                validation.put("email", user.getEmail());
+                validation.put("isAdmin", user.getIsAdmin());
+                validation.put("isAuthorized", user.getIsAuthorized());
+            }
+        }
+        return validation;
+    }
 
+    // registration
+    public Map<String, Object> validateUserReg(RegistrationDto regUser) {
+        User idUser = userRepository.findByUserId(regUser.getUserId());
+        User emailUser = userRepository.findByEmail(regUser.getEmail());
+        User contactUser = userRepository.findByContactNo(regUser.getContactNo());
 
-//find by authorization value where value =0 means not authorized;
-		public List<User> getAllUserByAuthStatus() {
-			
-			return userRepository.findByisAuthstatus();
-			
-		}
+        Map<String, Object> validation = new HashMap<>();
+        Map<String, String> errors = new HashMap<>();
 
-//change auth status(reject=2/accept=1/null=0)
+        boolean isValid = true;
+        if (idUser != null) {
+            errors.put("userId", "User Id already exists");
+            isValid = false;
+        }
+        if (emailUser != null) {
+            errors.put("email", "Email already exists");
+            isValid = false;
+        }
+        if (contactUser != null) {
+            errors.put("contactNo", "Contact already exists");
+            isValid = false;
+        }
 
-		public Map<String, String> changeAuthStatus(String userId ,int isAuthorized) {
-			
-			User user =userRepository.findByUserId(userId);	
-			Map<String,String> authResponse=new HashMap<>();
-			
-			if(user!=null) {
-				
-				if(isAuthorized==1) {
-					user.setIsAuthorized(isAuthorized);
-					userRepository.save(user);
-					authResponse.put("isAuthorized","Your request has been approved");
-					
-				}else if(isAuthorized==2){
-					user.setIsAuthorized(isAuthorized);
-					userRepository.save(user);
-					authResponse.put("isAuthorized","Your request has been declined");
-				
-				}else authResponse.put("isAuthorized","Remain unchange");
-				
-			}
-			
-			return authResponse;
-			
-		}
+        validation.put("isValid", isValid);
+        validation.put("errors", errors);
+
+        if (idUser == null && emailUser == null && contactUser == null) {
+            User user = new User(0, regUser.getUserId(), regUser.getFirstName(),
+                    regUser.getLastName(), regUser.getDob(), regUser.getGender(),
+                    regUser.getContactNo(), regUser.getEmail(), regUser.getPassword(),
+                    false, 0, null, regUser.getAns1(),
+                    regUser.getAns2(), regUser.getAns3());
+
+            userRepository.save(user);
+        }
+        return validation;
+    }
+
+    //forgot password  authentication (userId, ans1,2,3)
+    public Map<String, Object> validatePassword(String userId, String ans1, String ans2, String ans3) {
+        User user = userRepository.findByUserIdAndAns(userId, ans1, ans2, ans3);
+        Map<String, Object> validation = new HashMap<>();
+        if (user != null) {
+            validation.put("userId", user.getUserId());
+        } else {
+            validation.put("userId", null);
+        }
+        return validation;
+    }
 
 
+    //forgot UserID authentication (contactNo, ans1,2,3)
+    public Map<String, Object> validateUserId(String contactNo, String ans1, String ans2, String ans3) {
 
-		
-	
-	
-		
+        User user = userRepository.findByContactNoAndAns(contactNo, ans1, ans2, ans3);
+        Map<String, Object> validation = new HashMap<>();
+        if (user != null) {
+            validation.put("userId", user.getUserId());
+        } else {
+            validation.put("userId", null);
+        }
+        return validation;
+    }
+
+
+    //update password using userId
+    public void updatePassword(String userId, String password) {
+        User user = userRepository.findByUserId(userId);
+        if (user != null) {
+            user.setPassword(password);
+            userRepository.save(user);
+        }
+    }
+
+    //find by authorization value where value =0 means not authorized;
+    public List<User> getAllUserByAuthStatus() {
+        return userRepository.findByisAuthstatus();
+    }
+
+    //change auth status(reject=2/accept=1/null=0)
+    public Map<String, Boolean> changeAuthStatus(String userId, int isAuthorized) {
+        User user = userRepository.findByUserId(userId);
+        Map<String, Boolean> authResponse = new HashMap<>();
+        if (user != null) {
+            user.setIsAuthorized(isAuthorized);
+            userRepository.save(user);
+            authResponse.put("updated", true);
+        } else {
+            authResponse.put("updated", false);
+        }
+        return authResponse;
+    }
 }
