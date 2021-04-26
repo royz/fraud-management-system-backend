@@ -17,10 +17,8 @@ import com.mdu.fraudmanagement.repos.UserRepository;
 
 @Service
 public class UserService {
-
     @Autowired
     UserRepository userRepository;
-
 
     public List<User> findAllEmp() {
         return userRepository.findAll();
@@ -28,18 +26,21 @@ public class UserService {
 
     //login
     public Map<String, Object> validateUser(Login login) {
+        System.out.println(login.getUserId());
         User user = userRepository.findByUserId(login.getUserId());
         Map<String, Object> validation = new HashMap<>();
 
-        if (user != null) {
-            if (user.getPassword().equals(login.getPassword())) {
-                validation.put("userId", user.getUserId());
-                validation.put("name", user.getFirstName() + " " + user.getLastName());
-                validation.put("contactNo", user.getContactNo());
-                validation.put("email", user.getEmail());
-                validation.put("isAdmin", user.getIsAdmin());
-                validation.put("isAuthorized", user.getIsAuthorized());
-            }
+        if (user != null && user.getPassword().equals(login.getPassword())) {
+            validation.put("loggedIn", true);
+            validation.put("userId", user.getUserId());
+            validation.put("name", user.getFirstName() + " " + user.getLastName());
+            validation.put("contactNo", user.getContactNo());
+            validation.put("email", user.getEmail());
+            validation.put("isAdmin", user.getIsAdmin());
+            validation.put("isAuthorized", user.getIsAuthorized());
+        } else {
+            System.out.println(user);
+            validation.put("loggedIn", false);
         }
         return validation;
     }
