@@ -4,29 +4,34 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "Transaction")
 @Table(name = "Transaction")
 public class Transaction implements Serializable {
 	@Id
-	@Column(name = "userId")
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int Id;
 	private int accNo;
 	private int fraudLevel;
-	private int isLocked;
-	private int analysisPersonel;
+	private boolean isLocked; // user updated object not the, while post
 
-	public Transaction() {
-		super();
-	}
+	@ManyToOne()
+	@JoinColumn(name = "user_id", referencedColumnName = "userId")
+	private User user;
 
-	public Transaction(int id, int accNo, int fraudLevel, int isLocked, int analysisPersonel) {
+	public Transaction(int id, int accNo, int fraudLevel, boolean isLocked, User user) {
 		super();
 		Id = id;
 		this.accNo = accNo;
 		this.fraudLevel = fraudLevel;
 		this.isLocked = isLocked;
-		this.analysisPersonel = analysisPersonel;
+
+		this.user = user;
+	}
+
+	public Transaction() {
+		super();
+
 	}
 
 	public int getId() {
@@ -53,27 +58,26 @@ public class Transaction implements Serializable {
 		this.fraudLevel = fraudLevel;
 	}
 
-	public int getIsLocked() {
+	public boolean isLocked() {
 		return isLocked;
 	}
 
-	public void setIsLocked(int isLocked) {
+	public void setLocked(boolean isLocked) {
 		this.isLocked = isLocked;
 	}
 
-	public int getAnalysisPersonel() {
-		return analysisPersonel;
+	public User getUser() {
+		return user;
 	}
 
-	public void setAnalysisPersonel(int analysisPersonel) {
-		this.analysisPersonel = analysisPersonel;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
 	public String toString() {
 		return "Transaction [Id=" + Id + ", accNo=" + accNo + ", fraudLevel=" + fraudLevel + ", isLocked=" + isLocked
-				+ ", analysisPersonel=" + analysisPersonel + "]";
+				+ ", user=" + user + "]";
 	}
 
 }
-

@@ -42,6 +42,12 @@ public class CardService {
 		return cardRepository.findAll();
 	}
 	
+	// show card details of user_id
+		public List<Card> findCard(String user_id) {
+
+			return cardRepository.findByUserId(user_id);
+		}
+	
 	
 	//get card by id
 	public Optional<Card> findCard(int id) {

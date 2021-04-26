@@ -23,6 +23,7 @@ public interface CardRepository extends JpaRepository<Card, Integer> {
 	@Query(value="UPDATE cards c SET c.is_blocked=?2  WHERE c.acc_no=?1 ",nativeQuery = true)
 	public void updateBlockedStatus(@Param("acc_no") String accNo ,@Param("is_blocked") boolean isBlocked);
 
-
+	@Query(value = "SELECT * from cards c WHERE c.user_id=?1 ", nativeQuery = true)
+	List<Card> findByUserId(String user_id);
 
 }

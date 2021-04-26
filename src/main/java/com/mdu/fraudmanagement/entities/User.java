@@ -48,15 +48,15 @@ public class User implements Serializable {
 	private String ans3;
 	
 	
-//	@OneToMany(targetEntity= Card.class , cascade=CascadeType.ALL)
-//	@JoinColumn(name="cp_fk" ,referencedColumnName = "userId")
-//	private List<Card> cards;
-	
+
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY ,orphanRemoval = true,mappedBy = "user")
-	
 	private List<Card> cards;
 	
-	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "user")
+	private List<Claim> claim;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "user")
+	private List<Transaction> transaction;
 	
 	
 	

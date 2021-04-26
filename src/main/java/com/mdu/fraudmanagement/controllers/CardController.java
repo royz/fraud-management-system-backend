@@ -49,8 +49,15 @@ public class CardController {
 	List<Card> getAllCard() {
 		return cardService.getAllCard();
 	}
+	
+	// get card by user_id
+		@GetMapping("/user/one/card/{user_id}")
+		ResponseEntity<List<Card>> getByUserId(@PathVariable String user_id) {
 
-	//get card by id
+			return new ResponseEntity<>(cardService.findCard(user_id), HttpStatus.OK);
+		}
+
+	//get card by  cardFraud_id
 	@GetMapping("/user/one/card/{id}")
 	ResponseEntity<Card> getById(@PathVariable int id) {
 		Optional<Card> cd = cardService.findCard(id);
