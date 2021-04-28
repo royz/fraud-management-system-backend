@@ -9,132 +9,127 @@ import javax.persistence.*;
 @Table(name = "CARDS")
 public class Card implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	private int cardNo;
-	private String cardHolderName;
-	private String accNo;
-	private String cardType;
-	private Date expiryDate;
-	private Date dateTime;
-	private int fraudLevel;
-	private boolean isBlocked;
-	
+    private int cardNo;
+    private String cardHolderName;
+    private String accNo;
+    private String cardType;
+    private Date expiryDate;
+    private Date dateTime;
+    private int fraudLevel;
+    private boolean isBlocked;
 
-	@ManyToOne()
-	@JoinColumn(name="user_id" ,referencedColumnName ="userId")
-	private User user;
-	
+    @ManyToOne()
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
+    private User user;
 
-	public Card() {
-		super();
-	}
+    public Card() {
+        super();
+    }
 
-	public Card(int id, int cardNo, String cardHolderName, String accno, String cardType, Date expiryDate,
-			Date dateTime, int fraudLevel, boolean isBlocked, String accNo ,User user) {
-		super();
-		this.id = id;
-		this.cardNo = cardNo;
-		this.cardHolderName = cardHolderName;
-		this.accNo = accNo;
-		this.cardType = cardType;
-		this.expiryDate = expiryDate;
-		this.dateTime = dateTime;
-		this.fraudLevel = fraudLevel;
-		this.isBlocked = isBlocked;
-		this.user=user;
+    public Card(int id, int cardNo, String cardHolderName, String accno, String cardType, Date expiryDate,
+                Date dateTime, int fraudLevel, boolean isBlocked, String accNo, User user) {
+        super();
+        this.id = id;
+        this.cardNo = cardNo;
+        this.cardHolderName = cardHolderName;
+        this.accNo = accNo;
+        this.cardType = cardType;
+        this.expiryDate = expiryDate;
+        this.dateTime = dateTime;
+        this.fraudLevel = fraudLevel;
+        this.isBlocked = isBlocked;
+        this.user = user;
+    }
 
+    public int getId() {
+        return id;
+    }
 
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public int getCardNo() {
+        return cardNo;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setCardNo(int cardNo) {
+        this.cardNo = cardNo;
+    }
 
-	public int getCardNo() {
-		return cardNo;
-	}
+    public String getCardHolderName() {
+        return cardHolderName;
+    }
 
-	public void setCardNo(int cardNo) {
-		this.cardNo = cardNo;
-	}
+    public void setCardHolderName(String cardHolderName) {
+        this.cardHolderName = cardHolderName;
+    }
 
-	public String getCardHolderName() {
-		return cardHolderName;
-	}
+    public String getAccNo() {
+        return accNo;
+    }
 
-	public void setCardHolderName(String cardHolderName) {
-		this.cardHolderName = cardHolderName;
-	}
+    public void setAccNo(String accNo) {
+        this.accNo = accNo;
+    }
 
-	public String getAccNo() {
-		return accNo;
-	}
+    public String getCardType() {
+        return cardType;
+    }
 
-	public void setAccNo(String accNo) {
-		this.accNo = accNo;
-	}
+    public void setCardType(String cardType) {
+        this.cardType = cardType;
+    }
 
-	public String getCardType() {
-		return cardType;
-	}
+    public Date getExpiryDate() {
+        return expiryDate;
+    }
 
-	public void setCardType(String cardType) {
-		this.cardType = cardType;
-	}
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
+    }
 
-	public Date getExpiryDate() {
-		return expiryDate;
-	}
+    public Date getdateTime() {
+        return dateTime;
+    }
 
-	public void setExpiryDate(Date expiryDate) {
-		this.expiryDate = expiryDate;
-	}
+    public void setdateTime(Date dateTime) {
+        this.dateTime = dateTime;
+    }
 
-	public Date getdateTime() {
-		return dateTime;
-	}
+    public int getFraudLevel() {
+        return fraudLevel;
+    }
 
-	public void setdateTime(Date dateTime) {
-		this.dateTime = dateTime;
-	}
+    public void setFraudLevel(int fraudLevel) {
+        this.fraudLevel = fraudLevel;
+    }
 
-	public int getFraudLevel() {
-		return fraudLevel;
-	}
+    public boolean isBlocked() {
+        return isBlocked;
+    }
 
-	public void setFraudLevel(int fraudLevel) {
-		this.fraudLevel = fraudLevel;
-	}
+    public void setBlocked(boolean isBlocked) {
+        this.isBlocked = isBlocked;
+    }
 
-	public boolean isBlocked() {
-		return isBlocked;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public void setBlocked(boolean isBlocked) {
-		this.isBlocked = isBlocked;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	@Override
-	public String toString() {
-		return "Card [id=" + id + ", cardNo=" + cardNo + ", cardHolderName=" + cardHolderName + ", accNo=" + accNo
-				+ ", cardType=" + cardType + ", expiryDate=" + expiryDate + ", dateTime=" + dateTime + ", fraudLevel="
-				+ fraudLevel + ", isBlocked=" + isBlocked + ", user=" + user + "]";
-	}
+    @Override
+    public String toString() {
+        return "Card [id=" + id + ", cardNo=" + cardNo + ", cardHolderName=" + cardHolderName + ", accNo=" + accNo
+                + ", cardType=" + cardType + ", expiryDate=" + expiryDate + ", dateTime=" + dateTime + ", fraudLevel="
+                + fraudLevel + ", isBlocked=" + isBlocked + ", user=" + user + "]";
+    }
 
 }

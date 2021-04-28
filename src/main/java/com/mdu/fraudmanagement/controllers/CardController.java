@@ -85,7 +85,7 @@ public class CardController {
     }
 
     //cahange isblocked status by accNo
-    @PutMapping("user/fraud/card/blockStatusChange")
+    @PutMapping("frauds/card/block")
     private ResponseEntity<?> editIsBlockedStatusByAccNo(@RequestParam(name = "accNo") String accNo,
                                                          @RequestParam(name = "isBlocked") boolean isBlocked) {
         cardService.changeBlockSattus(accNo, isBlocked);
