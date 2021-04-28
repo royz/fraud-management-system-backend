@@ -21,20 +21,15 @@ import com.mdu.fraudmanagement.services.CardService;
 
 @RestController
 public class CardController {
-
     @Autowired
     CardService cardService;
-
 
     //registar new card (Card obj , user_id)
     //* Dont send the isBlocked status from the front end
     @PostMapping("/frauds/card/add")
     private ResponseEntity<Integer> registerCard(@RequestBody Card card, @RequestParam String user_id) {
-
         cardService.register(card, user_id);
-
         return new ResponseEntity<>(card.getId(), HttpStatus.ACCEPTED);
-
     }
 
     //delete by fraud id
