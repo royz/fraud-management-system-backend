@@ -37,7 +37,6 @@ public class UsersController {
         return new ResponseEntity<>(userService.validateUser(login), HttpStatus.BAD_REQUEST);
     }
 
-
     // new users registration with (userId,contactNo,email) validation + security
     // ans
     @PostMapping("/user/register")
@@ -81,11 +80,11 @@ public class UsersController {
     //isAuthorized status check
     @GetMapping("/user/not-authorized")
     private ResponseEntity<List<User>> getAuthorizedStatus() {
-        List<User> user = userService.getAllUserByAuthStatus();
-        if (!user.isEmpty()) {
-            return new ResponseEntity<>(user, HttpStatus.OK);
+        List<User> users = userService.getAllUserByAuthStatus();
+        if (!users.isEmpty()) {
+            return new ResponseEntity<>(users, HttpStatus.OK);
         }
-        return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(users, HttpStatus.ACCEPTED);
     }
 
     //isAuthorized status change(0 means nothing ,1=approved,2=reject)

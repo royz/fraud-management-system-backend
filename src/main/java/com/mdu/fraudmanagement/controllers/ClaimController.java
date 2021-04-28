@@ -19,58 +19,53 @@ import com.mdu.fraudmanagement.services.ClaimService;
 @RestController
 public class ClaimController {
 
-	@Autowired
-	ClaimService claimService;
+    @Autowired
+    ClaimService claimService;
 
-	// register new Claim (Claim obj , user_id)
-	@PostMapping("/user/frauds/claim/add")
-	private ResponseEntity<Integer> registerCard(@RequestBody Claim claim, @RequestParam String user_id) {
+    // register new Claim (Claim obj , user_id)
+    @PostMapping("/frauds/claim/add")
+    private ResponseEntity<Integer> registerCard(@RequestBody Claim claim, @RequestParam String user_id) {
+        claimService.register(claim, user_id);
+        return new ResponseEntity<>(claim.getId(), HttpStatus.ACCEPTED);
+    }
 
-		claimService.register(claim, user_id);
+    // delete by fraud id
+    // we can pass only id to delete the fraud
+    @PostMapping("/frauds/claim/delete")
+    private int addClaim(@RequestBody Claim claim) {
+        claimService.deleteClaim(claim);
+        return claim.getId();
+    }
 
-		return new ResponseEntity<>(claim.getId(), HttpStatus.ACCEPTED);
+    // List all claimFrauds
+    @GetMapping("/frauds/claim/all")
+    List<Claim> getAllClaim() {
+        return claimService.getAllClaim();
+    }
 
-	}
+    // List fraud by user_id
+    @GetMapping("/user/one/claim/{user_id}")
+    ResponseEntity<List<Claim>> getByUserId(@PathVariable String user_id) {
+        return new ResponseEntity<>(claimService.findClaim(user_id), HttpStatus.OK);
+    }
 
-	// delete by fraud id
-	// we can pass only id to delete the fraud
-	@PostMapping("/user/frauds/claim/delete")
-	private int addClaim(@RequestBody Claim claims) {
-		return claims.getId();
-	}
+    // Edit the Claim based on id
+    @PutMapping("/frauds/claim/update")
+    private ResponseEntity<?> editClaimFraudById(@RequestParam(name = "id") int id, @RequestBody Claim claim) {
+        claimService.editFrauds(id, claim);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
-	// List all claimFrauds
-	@GetMapping("/user/all/claim")
-	List<Claim> getAllClaim() {
+    // change isDuplicate status by idProofNo
+    @PutMapping("/user/fraud/claim/duplicacycheck")
+    private ResponseEntity<?> editIsDuplicateStatusByIdProofNo(@RequestParam(name = "idProofNo") int idProofNo,
+                                                               @RequestParam(name = "isDuplicate")
+                                                                       boolean isDuplicate) {
 
-		return claimService.getAllClaim();
-	}
+        claimService.changeDuplicateStatus(idProofNo, isDuplicate);
 
-	// List fraud by user_id
-	@GetMapping("/user/one/claim/{user_id}")
-	ResponseEntity<List<Claim>> getByUserId(@PathVariable String user_id) {
+        return new ResponseEntity<>(HttpStatus.OK);
 
-		return new ResponseEntity<>(claimService.findClaim(user_id), HttpStatus.OK);
-	}
-
-// Edit the Claim based on id
-	@PutMapping("/user/fraud/claim/update")
-	private ResponseEntity<?> editClaimFraudById(@RequestParam(name = "id") int id, @RequestBody Claim claim) {
-
-		claimService.editFrauds(id, claim);
-
-		return new ResponseEntity<>(HttpStatus.OK);
-
-	}
-	// change isDuplicate status by idProofNo
-	@PutMapping("/user/fraud/claim/duplicacycheck")
-	private ResponseEntity<?> editIsDuplicateStatusByIdProofNo(@RequestParam(name = "idProofNo") int idProofNo,
-			@RequestParam(name = "isDuplicate") boolean isDuplicate) {
-
-		claimService.changeDuplicateStatus(idProofNo, isDuplicate);
-
-		return new ResponseEntity<>(HttpStatus.OK);
-
-	}
+    }
 
 }
