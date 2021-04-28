@@ -95,4 +95,10 @@ public class UsersController {
     ) {
         return new ResponseEntity<>(userService.changeAuthStatus(userId, isAuthorized), HttpStatus.ACCEPTED);
     }
+
+    //isAuthorized status change(0 means nothing ,1=approved,2=reject)
+    @PostMapping("/users/pending")
+    private List<User> getPendingUsers() {
+        return userService.getAllUserByAuthStatus();
+    }
 }
